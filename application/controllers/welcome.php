@@ -19,6 +19,10 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
+		$this->load->helper('url');		
+		echo site_url("news/local/123");
+		exit();
+
 		$this->load->view('welcome_message');
 	}
 }

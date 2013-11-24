@@ -36,9 +36,14 @@ class Migration_Wheels extends CI_Migration {
                 'null' => FALSE,
             ),
         );
+
+        $this->dbforge->add_field($fields);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->add_key(array('name', 'width', 'height'));
+        $this->dbforge->create_table('wheels');        
     }
  
     public function down(){
-        $this->dbforge->drop_table('users');
+        $this->dbforge->drop_table('wheels');
     }
 }
