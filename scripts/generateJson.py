@@ -29,7 +29,7 @@ with open('weights.csv', 'r') as f:
       'method': method,
       'height': height,
       'width': width,
-      'weight': weight
+      'weight': "{:2.1f}".format(float(weight))
     }
     rv.append(wheel)
 

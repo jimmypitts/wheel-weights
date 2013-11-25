@@ -13,4 +13,15 @@ with open('wheels.json', 'r') as f:
   wheels = json.loads(f.readline())
 
 
-print db
+cursor = db.cursor()
+
+for wheel in wheels:
+  statement = "insert into wheels (name, method, height, width, weight) " \
+      'values ("' + wheel['name'] + '","' + wheel['method'] + '",' + wheel['height'] + ',' + wheel['width'] + ',' + wheel['weight'] + ');'
+
+  cursor.execute(statement)
+
+
+db.commit()
+db.close()
+print 'complete'
