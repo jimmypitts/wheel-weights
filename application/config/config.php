@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.1.113/wheels/';
+$config['base_url']	= 'http://192.168.1.114/wheels/';
 
 /*
 |--------------------------------------------------------------------------

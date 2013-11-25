@@ -4,7 +4,9 @@ class Wheels extends CI_Controller {
 
 	public function index() {
         $this->load->database();
+        $this->load->helper('url');
         $this->load->helper('pagination');
+
 
         $query = $this->db->query('SELECT height FROM height ORDER BY height ASC');
         $data['heights'] = array_map(function($row) {
@@ -17,13 +19,11 @@ class Wheels extends CI_Controller {
         }, $query->result_array());
 
         $name = isset($_GET['name']) ? $_GET['name'] : '';
-        $height = isset($_GET['height']) ? $_GET['height'] : 0;
-        $width = isset($_GET['width']) ? $_GET['width'] : 0;
+        $height = isset($_GET['height']) ? $_GET['height'] : array();
+        $width = isset($_GET['width']) ? $_GET['width'] : array();
 
         $token = isset($_GET['token']) ? $_GET['token'] : get_default_token();
         $token_params = unserialize_token($token);
-
-        var_dump($token_params);
 
         $query = 'SELECT name, method, height, width, weight,
             MATCH (name) AGAINST ("' . $name . '")
@@ -38,20 +38,20 @@ class Wheels extends CI_Controller {
             $query .= ' width IN (' . implode(",", $width) . ') ';
         }
 
-        $query .= 'ORDER BY 5 DESC 
+        $query .= 'ORDER BY 6 DESC 
             LIMIT ' . ($token_params['page'] * $token_params['skip']) . ', ' . $token_params['limit'] . ';';
-
-        $data['selected_heights'] = $height;
-        $data['selected_widths'] = $width;
-        $data['token_params'] = $token_params;
 
         $query = $this->db->query($query);
         $result = $query->result_array();
 
-        var_dump($result);
+        $data['selected_heights'] = $height;
+        $data['selected_widths'] = $width;
+        $data['token_params'] = $token_params;
+        $data['wheels'] = $result;
 
-
+        $this->load->view('header', $data);
         $this->load->view('index', $data);
+        $this->load->view('footer', $data);
 	}
 
 	public function show($id) {
