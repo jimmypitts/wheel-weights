@@ -37,10 +37,10 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
-
-//$route['migrate']               = 'migrate';
-$route['default_controller']    = "welcome";
+$route['show/(:num)']            = "wheels/show/$1";
+// $route['migrate']               = 'migrate/current';
+// $route['migrate/reset']         = 'migrate/reset';
+$route['default_controller']    = "wheels/index";
 $route['404_override'] = '';
 
 
