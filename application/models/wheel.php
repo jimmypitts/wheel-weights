@@ -25,7 +25,7 @@ class Wheel extends CI_Model {
             $query .= ' width IN (' . implode(",", $data['width']) . ') ';
         }
 
-        $query .= 'ORDER BY 6 DESC 
+        $query .= 'ORDER BY 6 DESC, weight ASC 
             LIMIT ' . $data['skip'] . ', ' . $data['limit'] . ';';
 
         try {
