@@ -2,51 +2,40 @@
 
 class Wheels extends CI_Controller {
 
+    function __construct(){
+        parent::__construct();
+    }
+
 	public function index() {
-        $this->load->database();
+
         $this->load->helper('url');
         $this->load->helper('pagination');
+        $this->load->model('Wheel');
 
+        $num_rows = $this->Wheel->get_count();
+        $current_page = array(
+            'page' => isset($_GET['page']) ? intval($_GET['page']) : get_default_page(),
+            'limit' => isset($_GET['limit']) ? intval($_GET['limit']) : get_default_limit(),
+            'skip' => isset($_GET['skip']) ? intval($_GET['skip']) : get_default_skip(),
+            'num_rows' => $num_rows,
+        );
 
-        $query = $this->db->query('SELECT height FROM height ORDER BY height ASC');
-        $data['heights'] = array_map(function($row) {
-            return $row['height'];
-        }, $query->result_array());
-
-        $query = $this->db->query('SELECT width FROM width ORDER BY width ASC');
-        $data['widths'] = array_map(function($row) {
-            return $row['width'];
-        }, $query->result_array());
-
-        $name = isset($_GET['name']) ? $_GET['name'] : '';
-        $height = isset($_GET['height']) ? $_GET['height'] : array();
-        $width = isset($_GET['width']) ? $_GET['width'] : array();
-
-        $token = isset($_GET['token']) ? $_GET['token'] : get_default_token();
-        $token_params = unserialize_token($token);
-
-        $query = 'SELECT name, method, height, width, weight,
-            MATCH (name) AGAINST ("' . $name . '")
-            FROM wheels ';
-
-        if ($height) {
-            $query .= 'WHERE height IN (' . implode(",", $height) . ') ';
+        if (isset($_GET['submit'])) {
+            $current_page = get_default_links() + $current_page;
         }
 
-        if ($width) {
-            $query .= $height ? 'AND' : 'WHERE';
-            $query .= ' width IN (' . implode(",", $width) . ') ';
-        }
+        $query_data = array(
+            'name' => isset($_GET['name']) ? $_GET['name'] : '',
+            'height' => isset($_GET['height']) ? $_GET['height'] : array(),
+            'width' => isset($_GET['width']) ? $_GET['width'] : array(),
+        ) + $current_page;
 
-        $query .= 'ORDER BY 6 DESC 
-            LIMIT ' . ($token_params['page'] * $token_params['skip']) . ', ' . $token_params['limit'] . ';';
+        $result = $this->Wheel->get_rows($query_data);
 
-        $query = $this->db->query($query);
-        $result = $query->result_array();
-
-        $data['selected_heights'] = $height;
-        $data['selected_widths'] = $width;
-        $data['token_params'] = $token_params;
+        $data['heights'] = $this->Wheel->get_heights();
+        $data['widths'] = $this->Wheel->get_widths();
+        $data['pagination_links'] = get_pagination_links($current_page);
+        $data['query_data'] = $query_data;
         $data['wheels'] = $result;
 
         $this->load->view('header', $data);

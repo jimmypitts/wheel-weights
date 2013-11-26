@@ -1,0 +1,47 @@
+/*
+ * General
+ */
+ .container {
+    margin-bottom: 10px;
+ }
+
+/*
+ * Select Button
+ */
+.input-label {
+    width: 60px;
+    min-height: 16px;
+}
+
+.text-input {
+    width: 160px;
+    display: inline;
+}
+
+.input-block {
+    margin: 5px auto;
+}
+
+/*
+ * Wheel Table
+ */
+#table {
+    margin-top: 20px;
+}
+
+#table td {
+    padding: 14px 8px 20px 8px!important;
+}
+
+
+/*
+ * Pagination Stuff
+ */
+ #pagination-block {
+    display: block;
+    text-align: center;
+ }
+
+.pagination-link {
+    margin: auto 5px;
+}
